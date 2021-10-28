@@ -2337,8 +2337,8 @@ TasGrid::TasmanianSparseGrid getStridedGaussLegendreGrid(int dim, int depth, int
 }
 
 void ExternalTester::debugTest(){
-    cout << "Debug Test (callable from the CMake build folder)" << endl;
-    cout << "Put testing code here and call with ./SparseGrids/gridtester debug" << endl;
+    // cout << "Debug Test (callable from the CMake build folder)" << endl;
+    // cout << "Put testing code here and call with ./SparseGrids/gridtester debug" << endl;
 
     // Test the accuracy of a strided Gauss-Legendre grid on the function
     //   (x1,...,xd) -> exp(-|x|^2) * cos(5 * x1) * ... * cos(5 * xd).
@@ -2347,11 +2347,11 @@ void ExternalTester::debugTest(){
     // int depth = 50;
 
     int max_stride = 10;
-    int max_dim = 3;
-    int max_depth = 20;
-    int max_level = 100;
+    int max_dim = 2;
+    int max_depth = 10;
+    int max_level = 20;
 
-    std::cout << "dim depth stride num_points err" << std::endl;
+    std::cout << "dim depth stride num_points log10_err" << std::endl;
     for (int dim=1; dim<=max_dim; dim++) {
         for (int depth=1; depth<=max_depth; depth++) {
             for (int stride=1; stride<=max_stride; stride++) {
@@ -2370,10 +2370,10 @@ void ExternalTester::debugTest(){
                     }
                     approx_integral += fn_val * weights[i];
                 }
-                double exact_integral = 1.3123487254630137 * dim;
-                double err = fabs(approx_integral - exact_integral); 
+                double exact_integral = pow(1.3123487254630137, dim);
+                double log10_err = log10(fabs(approx_integral - exact_integral)); 
                 std::cout << dim << " " << depth << " " << stride << " " << weights.size() << " "
-                          << std::scientific << err << std::endl;
+                          << std::scientific << log10_err << std::endl;
             }
         }
     }
