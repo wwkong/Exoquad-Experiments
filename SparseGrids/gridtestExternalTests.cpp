@@ -2314,9 +2314,69 @@ bool ExternalTester::testAllAcceleration() const{
     return pass;
 }
 
+// Constructs a quadrature grid of dimension \b dim, total degree \b depth, from Gauss-Legendre rules with stride \b stride, starting
+// from level 0 up to level \b max_level.
+TasGrid::TasmanianSparseGrid getStridedGaussLegendreGrid(int dim, int depth, int max_level, int stride) {
+    // Create the full CustomTabulated instance with n levels.
+    int num_levels = 0;
+    std::vector<int> num_nodes, precision;
+    std::vector<std::vector<double>> nodes, weights;
+    for (int i=0; i<max_level; i+=stride) {
+        num_levels++;
+        num_nodes.push_back(i + 1);
+        precision.push_back(2 * (i + 1) - 1);
+        nodes.emplace_back(std::vector<double>());
+        weights.emplace_back(std::vector<double>());
+        OneDimensionalNodes::getGaussLegendre(num_nodes.back(), weights.back(), nodes.back());
+    }
+    TasGrid::CustomTabulated ct = TasGrid::CustomTabulated(num_levels, std::move(num_nodes), std::move(precision), std::move(nodes),
+                                                           std::move(weights), "Subset of Gauss-Legendre rules");
+    TasGrid::TasmanianSparseGrid tsg;
+    tsg.makeGlobalGrid(dim, 0, depth, type_qptotal, std::move(ct));
+    return tsg;
+}
+
 void ExternalTester::debugTest(){
     cout << "Debug Test (callable from the CMake build folder)" << endl;
     cout << "Put testing code here and call with ./SparseGrids/gridtester debug" << endl;
+
+    // Test the accuracy of a strided Gauss-Legendre grid on the function
+    //   (x1,...,xd) -> exp(-|x|^2) * cos(5 * x1) * ... * cos(5 * xd).
+
+    // int dim = 1;
+    // int depth = 50;
+
+    int max_stride = 10;
+    int max_dim = 3;
+    int max_depth = 20;
+    int max_level = 100;
+
+    std::cout << "dim depth stride num_points err" << std::endl;
+    for (int dim=1; dim<=max_dim; dim++) {
+        for (int depth=1; depth<=max_depth; depth++) {
+            for (int stride=1; stride<=max_stride; stride++) {
+                // Create the strided grid.
+                TasGrid::TasmanianSparseGrid strided_grid = getStridedGaussLegendreGrid(dim, depth, max_level, stride);
+
+                // Integrate.
+                std::vector<double> weights = strided_grid.getQuadratureWeights();
+                std::vector<double> nodes = strided_grid.getPoints();
+                double approx_integral = 0;
+                for (size_t i=0; i<weights.size(); i++) {
+                    double fn_val = 1;
+                    for (int d=0; d<dim; d++) {
+                        double x = nodes[dim * i + d];
+                        fn_val *= exp(-x*x) * cos(x);
+                    }
+                    approx_integral += fn_val * weights[i];
+                }
+                double exact_integral = 1.3123487254630137 * dim;
+                double err = fabs(approx_integral - exact_integral); 
+                std::cout << dim << " " << depth << " " << stride << " " << weights.size() << " "
+                          << std::scientific << err << std::endl;
+            }
+        }
+    }
 }
 
 void ExternalTester::debugTestII(){
