@@ -2346,15 +2346,18 @@ void ExternalTester::debugTest(){
     // int dim = 1;
     // int depth = 50;
 
+    int min_stride = 1;
     int max_stride = 10;
-    int max_dim = 2;
+    int min_dim = 2;
+    int max_dim = 5;
+    int min_depth = 1;
     int max_depth = 10;
     int max_level = 20;
 
     std::cout << "dim depth stride num_points log10_err" << std::endl;
-    for (int dim=1; dim<=max_dim; dim++) {
-        for (int depth=1; depth<=max_depth; depth++) {
-            for (int stride=1; stride<=max_stride; stride++) {
+    for (int dim=min_dim; dim<=max_dim; dim++) {
+        for (int depth=min_depth; depth<=max_depth; depth++) {
+            for (int stride=min_stride; stride<=max_stride; stride++) {
                 // Create the strided grid.
                 TasGrid::TasmanianSparseGrid strided_grid = getStridedGaussLegendreGrid(dim, depth, max_level, stride);
 
