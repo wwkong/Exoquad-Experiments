@@ -2347,12 +2347,12 @@ void ExternalTester::debugTest(){
     // int depth = 50;
 
     int min_stride = 1;
-    int max_stride = 10;
-    int min_dim = 2;
-    int max_dim = 5;
+    int max_stride = 15;
+    int min_dim = 1;
+    int max_dim = 4;
     int min_depth = 1;
-    int max_depth = 10;
-    int max_level = 20;
+    int max_depth = 40;
+    int max_level = 35;
 
     std::cout << "dim depth stride num_points log10_err" << std::endl;
     for (int dim=min_dim; dim<=max_dim; dim++) {
@@ -2374,7 +2374,7 @@ void ExternalTester::debugTest(){
                     approx_integral += fn_val * weights[i];
                 }
                 double exact_integral = pow(1.3123487254630137, dim);
-                double log10_err = log10(fabs(approx_integral - exact_integral)); 
+                double log10_err = log10(1e-15 + fabs(approx_integral - exact_integral)); 
                 std::cout << dim << " " << depth << " " << stride << " " << weights.size() << " "
                           << std::scientific << log10_err << std::endl;
             }
