@@ -106,7 +106,7 @@ namespace TasmanianTridiagonalSolver{
     std::vector<double> getSymmetricEigenvalues(int n, std::vector<double> const &diag, std::vector<double> const &offdiag);
 
     //! \brief Specifies the version of decompose to use (for developer use only).
-    static constexpr int decompose_version = 1;
+    static constexpr int decompose_version = 2;
 
     //! \brief Method for tridiagonal eigenvalue decomposition, used to compute nodes and weights for Gaussian rules.
     //! On return, it destroys the inputs \b diag and \b offdiag and writes the outputs to \b nodes and \b weights. The parameter
