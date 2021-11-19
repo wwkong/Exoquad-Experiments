@@ -1,4 +1,4 @@
-# Experiments for the exotic quadrature paper.
+# Multi-dimensional experiments for the exotic quadrature paper.
 import TasmanianSG
 import TasmanianAddons
 
@@ -46,7 +46,7 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
     # Gauss-Legendre (all).
     pGridFn = lambda iDepth : TasmanianSG.makeGlobalGrid(iDim, 0, iDepth, 'qptotal', 'gauss-legendre')
     lNumPoints, lErr = getData(pGridFn, iMaxPoints, fMinErr, fIntegral, pCombinedFn)
-    plt.plot(lNumPoints,  + lErr, label="GL", marker='o')
+    plt.plot(lNumPoints, fErrLower + lErr, label="GL", marker='o')
 
     # Gauss-Legendre (odd).
     pGridFn = lambda iDepth : TasmanianSG.makeGlobalGrid(iDim, 0, iDepth, 'qptotal', 'gauss-legendre-odd')
