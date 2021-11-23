@@ -1,4 +1,4 @@
-# Multi-dimensional experiments for the exotic quadrature paper.
+# One-dimensional experiments for the exotic quadrature paper.
 import TasmanianSG
 import TasmanianAddons
 
@@ -100,7 +100,7 @@ pIntegrandFn = lambda x : sp.iv(0, np.pi * np.sqrt(1 - x ** 2)) / 2
 pWeightFnReal = lambda x : np.cos(a * x)
 pWeightFnIm = lambda x : np.sin(a * x)
 fBaseIntegral = np.sinc(np.sqrt(a ** 2 - np.pi ** 2) / np.pi)
-sTitle = r'Relative Errors for Frequency $a=' + str(int(a / np.pi)) + r'\pi$'
+sTitle = r'Relative Errors for Frequency $a=' + str(int(a / np.pi)) +  r'$'
 sFname = 'radio1_a10.svg'
 print('Creating ' + sFname + '...')
 print(fBaseIntegral)
@@ -116,7 +116,7 @@ pIntegrandFn = lambda x : sp.iv(0, np.pi * np.sqrt(1 - x ** 2)) / 2
 pWeightFnReal = lambda x : np.cos(a * x)
 pWeightFnIm = lambda x : np.sin(a * x)
 fBaseIntegral = np.sinc(np.sqrt(a ** 2 - np.pi ** 2) / np.pi)
-sTitle = r'Relative Errors for Frequency $a=' + str(int(a / np.pi)) + r'\pi$'
+sTitle = r'Relative Errors for Frequency $a=' + str(int(a / np.pi)) + r'$'
 sFname = 'radio1_a20.svg'
 print('Creating ' + sFname + '...')
 print(fBaseIntegral)
