@@ -41,7 +41,7 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
     plt.rc('xtick', labelsize=iFontSize-2)
     plt.rc('ytick', labelsize=iFontSize-2)
     plt.rc('figure', titlesize=iFontSize+2)
-    plt.figure()
+    fig = plt.figure()
     if pWeightFnIm:
         pCombinedFn = lambda x : pIntegrandFn(x) * np.prod(pWeightFnReal(x) +  pWeightFnIm(x) * 1j)
     else:
@@ -106,4 +106,6 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
         plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order],loc="upper right")
     else:
         plt.legend(loc="upper right")
+        # plt.legend(["GL", "Proposed Rule"], loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=2)
+        # fig.subplots_adjust(bottom=0.25)
     plt.savefig(sFname)
