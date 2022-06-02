@@ -15,7 +15,7 @@ f = x -> exp(im * a * x)
 sample = a .* range(-N, N, step=1) ./ N
 moments = aux_int.(sample)
 integralVal = aux_int.(a)
-display(integralVal)
+#display(integralVal)
 
 # Evaluate.
 num_points = []

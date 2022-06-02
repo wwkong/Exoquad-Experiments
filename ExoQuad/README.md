@@ -1,7 +1,10 @@
+# Exotic Quadrature
+Additional Python code for running exotic quadrature experiments in the TASMANIAN library
+
 To run the experiments:
 
-1. Build the library using CMake with Python enabled, e.g.
-```console
+1. Build the library using CMake with Python support enabled, e.g.,
+```bash
 #!/bin/sh
 
 BUILD_DIR=/tmp/ramdisk/TASMANIAN_Build
