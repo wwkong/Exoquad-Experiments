@@ -1,0 +1,16 @@
+# Download and unpack TASMANIAN.
+cmake_minimum_required(VERSION 3.0)
+
+project(tasmanian)
+
+include(ExternalProject)
+ExternalProject_Add(tasmanian
+  GIT_REPOSITORY    https://github.com/ORNL/TASMANIAN.git
+  GIT_TAG           master
+  SOURCE_DIR        "${CMAKE_BINARY_DIR}/tasmanian-src"
+  BINARY_DIR        "${CMAKE_BINARY_DIR}/tasmanian-build"
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+	TEST_COMMAND ""
+)
