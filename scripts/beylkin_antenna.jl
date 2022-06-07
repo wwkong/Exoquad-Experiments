@@ -1,4 +1,4 @@
-using GaussQuadrature
+using ExpGauss
 using Random
 using SpecialFunctions
 
@@ -22,7 +22,7 @@ num_points = []
 relative_err = []
 tols = [10 .^ (-0.5:-0.1:-0.9) ; 10.0 .^ (-1:-1:-14)]
 for tol in tols
-    nodes, weights = GaussQuadrature.ExpGauss.getExpGaussNodesAndWeights2(a, moments, tol)
+    nodes, weights = ExpGauss.getExpGaussNodesAndWeights2(a, moments, tol)
     fvals = f.(nodes)
     integralApprox = sum(fvals .* weights) 
     append!(num_points, length(weights))

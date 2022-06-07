@@ -1,4 +1,4 @@
-name = "GaussQuadrature"
+name = "ExpGauss"
 uuid = "48831af0-96d2-439a-a635-283000aafce5"
 authors = ["William Kong <wwkong92@gmail.com>"]
 version = "0.1.0"

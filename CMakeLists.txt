@@ -1,19 +1,16 @@
-# Initialization.
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.15)
 project(exotic-quadrature-experiments)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Build TASMANIAN.
-execute_process(
-  COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}/cmake
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/external/TASMANIAN
+# Download and unpack TASMANIAN.
+include(FetchContent)
+set(Tasmanian_ENABLE_RECOMMENDED ON CACHE INTERNAL "Turn on recommended options (includes Python).")
+FetchContent_Declare(
+  Tasmanian
+  GIT_REPOSITORY    https://github.com/ORNL/TASMANIAN.git
+  GIT_TAG           master
 )
-execute_process(
-  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/external/TASMANIAN
-)
+FetchContent_MakeAvailable(tasmanian)
 
-# # Build Dependencies.
-# add_subdirectory(cmake)
-# add_subdirectory(julia)
-# add_subdirectory(python)
-
+# Build Dependencies.
+add_subdirectory("${CMAKE_SOURCE_DIR}/src")
+add_subdirectory("${CMAKE_SOURCE_DIR}/scripts")
