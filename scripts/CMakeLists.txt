@@ -8,13 +8,20 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/beylkin_antenna.in.jl" "${CMAKE_CURR
 
 # Main Python Scripts
 set(Tasmanian_python_import "sys.path.append(\"${Tasmanian_BINARY_DIR}/Python\")")
-set(Exoquad_python_import "sys.path.append(\"${CMAKE_CURRENT_BINARY_DIR}/../src\")")
+set(Exoquad_src_python_import "sys.path.append(\"${CMAKE_CURRENT_BINARY_DIR}/../src\")")
+set(Exoquad_script_python_import "sys.path.append(\"${CMAKE_CURRENT_BINARY_DIR}/../script\")")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenerateData.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GenerateData.py")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/exoquad.in.py" "${CMAKE_CURRENT_BINARY_DIR}/exoquad.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GeneratePlots_1D.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GeneratePlots_1D.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GeneratePlots_nD1.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GeneratePlots_nD1.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GeneratePlots_nD2.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GeneratePlots_nD2.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GeneratePlots_nD3.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GeneratePlots_nD3.py")
 
 # Auxiliary scripts
-set(Exoquad_script_files exoquad_1D.py
-  exoquad_nD.py)
+set(Exoquad_script_files AntennaExp.py
+                         AbsSinExp.py
+                         SqrSincExp.py
+                         SumSincExp.py
+                         QuadSincExp.py)
 
 # Copies each source file to the build directory
 foreach(Exoquad_script_file ${Exoquad_script_files})

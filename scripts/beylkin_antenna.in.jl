@@ -39,7 +39,7 @@ for a0 in [10; 20]
     # Write to a file.
     data = hcat(num_points, relative_err)
     res_folder = @Exoquad_res_folder@
-    fname = res_folder * "/beylkin_antenna_data_" * string(a0) * ".txt" 
+    fname = res_folder * "/beylkin_antenna_data_a" * string(a0) * ".txt" 
     DelimitedFiles.writedlm(fname, data)
 
 end

@@ -29,7 +29,8 @@ def getData(pGridConstructor, iMaxPoints, fMinErr, fIntegral, pIntegrandFn):
     return lNumPoints, lErr, lEstimates
 
 def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWeightFnReal, fShift, pWeightFnIm=[],
-                 lGBNumPoints=[], lGBRelativeErr=[], sFname="plot.svg", iSymmetric=False, iNref=500, iLocalPolynomial=False):
+                 lGBNumPoints=np.array([]), lGBRelativeErr=np.array([]), sFname="plot.svg", iSymmetric=False, iNref=500,
+                 iLocalPolynomial=False):
 # For an upper bound on the number of points and a given dimension, plot the accuracy of Gauss-Legendre, Gauss-Legendre (odd),
 # Gauss-Patterson, and Exotic Quadrature grids with respect to a given integral value fIntegral, a 1D weight function pWeightFn,
 # and an nD integrand function pIntegrandFn.
@@ -90,8 +91,8 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
         plt.plot(lNumPoints, fErrLower + lErr, label="LP", marker='+')
 
     # Gauss-Bandlimited
-    if lGBNumPoints:
-        plt.plot(np.array(lGBNumPoints), fErrLower + np.array(lGBRelativeErr), label="GB", marker='D')
+    if lGBNumPoints.any():
+        plt.plot(lGBNumPoints, fErrLower + lGBRelativeErr, label="GB", marker='D')
 
     # Show plots.
     plt.title(sTitle)
@@ -99,13 +100,11 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
     plt.ylabel("Relative Error")
     plt.yscale("log")
     plt.grid(linestyle="--", linewidth=0.25)
-    if lGBNumPoints or iLocalPolynomial:
+    if lGBNumPoints.any() or iLocalPolynomial:
         # Re-arrange legend.
         handles, labels = plt.gca().get_legend_handles_labels()
         order = [4,0,1,2,3]
         plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order],loc="upper right")
     else:
         plt.legend(loc="upper right")
-        # plt.legend(["GL", "Proposed Rule"], loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=2)
-        # fig.subplots_adjust(bottom=0.25)
     plt.savefig(sFname)
