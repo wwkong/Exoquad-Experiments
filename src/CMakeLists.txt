@@ -4,7 +4,6 @@ set(Exoquad_source_files ExpGauss.jl
 # Copies each source file to the build directory
 foreach(Exoquad_source_file ${Exoquad_source_files})
   add_custom_command(
-    PRE_BUILD
     OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${Exoquad_source_file}"
     COMMAND "${CMAKE_COMMAND}"
     ARGS    -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${Exoquad_source_file}" "${CMAKE_CURRENT_BINARY_DIR}/${Exoquad_source_file}"
@@ -13,7 +12,6 @@ foreach(Exoquad_source_file ${Exoquad_source_files})
 endforeach()
 
 add_custom_command(
-  PRE_BUILD
   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/../Project.toml"
   COMMAND "${CMAKE_COMMAND}"
   ARGS    -E copy "${CMAKE_CURRENT_SOURCE_DIR}/Project.toml" "${CMAKE_CURRENT_BINARY_DIR}/../Project.toml"

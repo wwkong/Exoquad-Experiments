@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 res_folder = @Exoquad_res_folder@
 
 @Tasmanian_python_import@
-import TasmanianSG
+import Tasmanian
 
 @Exoquad_src_python_import@
 @Exoquad_script_python_import@
@@ -28,7 +28,7 @@ for (a, m) in [(1,'o'), (5,'v'), (10,'v'), (25,'D')]:
     fIntegral = 2 * sp.sici(a)[0] / a
     pIntegrandFn = lambda x : np.sinc(a * x / np.pi)
     fErrLower = 1e-20
-    pGridFn = lambda iDepth : TasmanianSG.makeGlobalGrid(1, 0, iDepth, 'qptotal', 'gauss-legendre')
+    pGridFn = lambda iDepth : Tasmanian.makeGlobalGrid(1, 0, iDepth, 'qptotal', 'gauss-legendre')
     lNumPoints, lErr, _ = ExoquadUtils.getData(pGridFn, iMaxPoints, fMinErr, fIntegral, pIntegrandFn)
     plt.plot(lNumPoints, fErrLower + lErr, label=r'$a=' + str(a) + r'$', marker=m)
 plt.title("Relative Errors for Different Frequencies")

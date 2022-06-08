@@ -14,6 +14,6 @@ def write_plot(a, beylkin_data, dname):
     sTitle = r'Relative Errors for Frequency $a=' + str(int(a)) +  r'$'
     sFname = dname + "/antenna_a" + str(int(a)) + ".svg"
     print('Creating ' + sFname + '...')
-    ExoquadUtils.plotAccuracy(sTitle, 25, 1e-14, 1, fBaseIntegral, pIntegrandFn, pWeightFnReal, 1.0,
+    ExoquadUtils.plotAccuracy(sTitle, 25, 1e-8, 1, fBaseIntegral, pIntegrandFn, pWeightFnReal, 1.0,
                               pWeightFnIm=pWeightFnIm, lGBNumPoints=beylkin_data[:,0], lGBRelativeErr=beylkin_data[:,1],
-                              sFname=sFname)
+                              sFname=sFname, iNref=2000)

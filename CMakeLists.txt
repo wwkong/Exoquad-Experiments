@@ -3,7 +3,7 @@ project(exotic-quadrature-experiments)
 
 # Download and unpack TASMANIAN.
 include(FetchContent)
-set(Tasmanian_ENABLE_RECOMMENDED ON CACHE INTERNAL "Turn on recommended options (includes Python).")
+set(Tasmanian_ENABLE_PYTHON ON CACHE INTERNAL "Turn on TASMANIAN Python wrappers.")
 FetchContent_Declare(
   Tasmanian
   GIT_REPOSITORY    https://github.com/ORNL/TASMANIAN.git

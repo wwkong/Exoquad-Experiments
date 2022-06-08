@@ -1,5 +1,5 @@
 # One-dimensional experiments for the exotic quadrature paper.
-import TasmanianSG
+import Tasmanian
 import TasmanianAddons
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,7 +51,7 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
 
     # Wrappers.
     def pGridWrapper(iDepth, sType):
-        return TasmanianSG.makeGlobalGrid(iDim, 0, iDepth, 'qptotal', sType)
+        return Tasmanian.makeGlobalGrid(iDim, 0, iDepth, 'qptotal', sType)
 
     # Gauss-Legendre (all).
     pGridFn = lambda iDepth : pGridWrapper(iDepth, 'gauss-legendre')
@@ -71,14 +71,17 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
     # Gauss-Exotic.
     def pExoGridFn(iDepth, pWeightFn):
         exoCT = TasmanianAddons.createExoticQuadratureFromFunction(iDepth + 1, fShift, pWeightFn, iNref, "Exotic Quadrature", iSymmetric)
-        return TasmanianSG.makeGlobalGridCustom(iDim, 0, iDepth, 'qptotal', exoCT)
+        return Tasmanian.makeGlobalGridCustom(iDim, 0, iDepth, 'qptotal', exoCT)
     if pWeightFnIm:
         pExoGridFnReal = lambda iDepth : pExoGridFn(iDepth, pWeightFnReal)
         pExoGridFnIm = lambda iDepth : pExoGridFn(iDepth, pWeightFnIm)
         dummy = 1.0
-        lNumPoints, _, lEstReal = getData(pExoGridFnReal, iMaxPoints, fMinErr, dummy, pIntegrandFn)
-        _, _, lEstIm = getData(pExoGridFnIm, iMaxPoints, fMinErr, dummy, pIntegrandFn)
+        lNumPoints, _, lEstReal = getData(pExoGridFnReal, iMaxPoints, fErrLower, dummy, pIntegrandFn)
+        _, _, lEstIm = getData(pExoGridFnIm, iMaxPoints, fErrLower, dummy, pIntegrandFn)
         lErr = abs(lEstReal + lEstIm * 1j - fIntegral) / abs(fIntegral)
+        # Filter
+        lNumPoints = lNumPoints[lErr >= fMinErr]
+        lErr = lErr[lErr >= fMinErr]
     else:
         pExoGridFnReal = lambda iDepth : pExoGridFn(iDepth, pWeightFnReal)
         lNumPoints, lErr, _ = getData(pExoGridFnReal, iMaxPoints, fMinErr, fIntegral, pIntegrandFn)
@@ -86,7 +89,7 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
 
     # Local Polynomial
     if iLocalPolynomial:
-        pGridFn = lambda iDepth : TasmanianSG.makeLocalPolynomialGrid(iDim, 0, iDepth, iOrder=2, sRule="localp")
+        pGridFn = lambda iDepth : Tasmanian.makeLocalPolynomialGrid(iDim, 0, iDepth, iOrder=2, sRule="localp")
         lNumPoints, lErr, _ = getData(pGridFn, iMaxPoints, fMinErr, fIntegral, pCombinedFn)
         plt.plot(lNumPoints, fErrLower + lErr, label="LP", marker='+')
 

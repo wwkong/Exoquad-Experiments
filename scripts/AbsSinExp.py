@@ -12,4 +12,5 @@ def write_plot(a, fBaseIntegral, dname):
     sTitle = r'Relative Errors for Frequency $a=' + str(int(a)) +  r'$'
     sFname = dname + '/abs_sin_a' + str(a) + '.svg'
     print('Creating ' + sFname + '...')
-    ExoquadUtils.plotAccuracy(sTitle, 25, 1e-14, 1, fBaseIntegral, pIntegrandFn, pWeightFn, 1.0, sFname=sFname, iLocalPolynomial=True)
+    ExoquadUtils.plotAccuracy(sTitle, 25, 1e-5, 1, fBaseIntegral, pIntegrandFn, pWeightFn, 1.0, sFname=sFname,
+                              iNref=3000, iLocalPolynomial=True)

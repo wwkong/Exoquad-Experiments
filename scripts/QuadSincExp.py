@@ -13,5 +13,5 @@ def write_plot(a, iDim, fIntegral1D, fIntegralWeight, dname):
     sFname = dname + '/exp3_dim' + str(iDim) + '.svg'
     fIntegral = iDim * (fIntegral1D * fIntegralWeight ** (iDim - 1))
     print('Creating ' + sFname + '...')
-    ExoquadUtils.plotAccuracy(sTitle, 2000 * (5 ** (iDim - 2)), 1e-14, iDim, fIntegral, pIntegrandFn,
-                              pWeightFn, 1.0, sFname=sFname)
+    ExoquadUtils.plotAccuracy(sTitle, 2000 * (5 ** (iDim - 2)), 1e-7, iDim, fIntegral, pIntegrandFn,
+                              pWeightFn, 1.0, sFname=sFname, iNref=1000*iDim)

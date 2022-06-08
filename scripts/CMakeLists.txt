@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.15)
-project(experiments-scripts)
-
 # Main Julia Scripts
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../res")
 set(Exoquad_res_folder "\"${CMAKE_CURRENT_BINARY_DIR}/../res\"")
@@ -26,7 +23,6 @@ set(Exoquad_script_files AntennaExp.py
 # Copies each source file to the build directory
 foreach(Exoquad_script_file ${Exoquad_script_files})
   add_custom_command(
-    PRE_BUILD
     OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${Exoquad_script_file}"
     COMMAND "${CMAKE_COMMAND}"
     ARGS    -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${Exoquad_script_file}" "${CMAKE_CURRENT_BINARY_DIR}/${Exoquad_script_file}"

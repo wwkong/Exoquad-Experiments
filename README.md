@@ -9,10 +9,13 @@ Table of Contents
 
 Requirements
 ------------
-These experiments require the following to run:
-* [CMake](https://cmake.org/) 3.15+
-* [Julia](https://julialang.org/) 1.7+
-* [Python](https://www.python.org/) 3.8+
+These experiments use the following tools:
+* [Git](https://git-scm.com/) 2.25+ (recommended)
+* [CMake](https://cmake.org/) 3.15+ (recommended)
+* [Julia](https://julialang.org/) 1.7+ (**required**)
+* [Python](https://www.python.org/) 3.8+ (recommended)
+
+**Note**: Julia is only needed in the `GenerateData.py` and `GeneratePlots_1D.py` scripts in the [Usage](#usage) section below. 
 
 Usage
 -----
@@ -33,16 +36,16 @@ make -j
 3. Generate the data files in the build directory using
 ```bash
 cd ${BUILD_DIRECTORY}
-python scripts/GenerateData.py
+python3 ./scripts/GenerateData.py
 ```
 This will also install and compile any necessary Julia packages.
 
 4. Generate the SVG experiment plots using
 ```bash
 cd ${BUILD_DIRECTORY}
-python scripts/GeneratePlots_1D.py
-python scripts/GeneratePlots_nD1.py
-python scripts/GeneratePlots_nD2.py
-python scripts/GeneratePlots_nD3.py
+python3 ./scripts/GeneratePlots_1D.py
+python3 ./scripts/GeneratePlots_nD1.py
+python3 ./scripts/GeneratePlots_nD2.py
+python3 ./scripts/GeneratePlots_nD3.py
 ```
 These plots can be found in `${BUILD_DIRECTORY}/res/`.
