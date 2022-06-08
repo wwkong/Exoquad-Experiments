@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.15)
 project(experiments-scripts)
 
-# Main Script
+# Main Julia Scripts
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../res")
+set(Exoquad_res_folder "\"${CMAKE_CURRENT_BINARY_DIR}/../res\"")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/beylkin_antenna.in.jl" "${CMAKE_CURRENT_BINARY_DIR}/beylkin_antenna.jl")
+
+# Main Python Scripts
 set(Tasmanian_python_import "sys.path.append(\"${Tasmanian_BINARY_DIR}/Python\")")
 set(Exoquad_python_import "sys.path.append(\"${CMAKE_CURRENT_BINARY_DIR}/../src\")")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenerateData.in.py" "${CMAKE_CURRENT_BINARY_DIR}/GenerateData.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/exoquad.in.py" "${CMAKE_CURRENT_BINARY_DIR}/exoquad.py")
 
 # Auxiliary scripts
-set(Exoquad_script_files beylkin_antenna.jl
-                         exoquad_1D.py
-                         exoquad_nD.py)
+set(Exoquad_script_files exoquad_1D.py
+  exoquad_nD.py)
 
 # Copies each source file to the build directory
 foreach(Exoquad_script_file ${Exoquad_script_files})

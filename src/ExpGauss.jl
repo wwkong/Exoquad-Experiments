@@ -1,3 +1,4 @@
+__precompile__()
 module ExpGauss
 #=
 Implementation of the algorithms in the papers:
@@ -55,7 +56,7 @@ function getExpGaussNodesAndWeights1(c, moments, tol)
 end
 
 function getExpGaussNodesAndWeights2(c, moments, tol)
-    # Based on the quadrature algorithm in [1, Algorithm 1]. Expects the same inputs as in getExpGaussNodesAndWeights1().
+    # Based on the quadrature algorithm in [2, Algorithm 1]. Expects the same inputs as in getExpGaussNodesAndWeights1().
     if length(moments) % 2 != 1 || length(moments) <= 3
         throw(ArgumentError("Value array must be an odd length that is greater than 3!"))
     end
@@ -96,10 +97,11 @@ function getExpGaussNodesAndWeights2(c, moments, tol)
     @objective(SOCP, Min, t)
     JuMP.optimize!(SOCP)
     if (JuMP.termination_status(SOCP) == MOI.OPTIMAL ||
+        JuMP.termination_status(SOCP) == MOI.ALMOST_OPTIMAL ||
         JuMP.termination_status(SOCP) == MOI.TIME_LIMIT && JuMP.has_values(SOCP))
         weights = JuMP.value.(re_weights) .+ im .* JuMP.value.(im_weights)
     else
-        error("The model was not solved correctly.")
+        error("The model terminated improperly with status: " * string(JuMP.termination_status(SOCP)))
     end
     # Output.
     return nodes, weights
