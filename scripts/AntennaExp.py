@@ -16,4 +16,4 @@ def write_plot(a, beylkin_data, dname):
     print('Creating ' + sFname + '...')
     ExoquadUtils.plotAccuracy(sTitle, 25, 1e-8, 1, fBaseIntegral, pIntegrandFn, pWeightFnReal, 1.0,
                               pWeightFnIm=pWeightFnIm, lGBNumPoints=beylkin_data[:,0], lGBRelativeErr=beylkin_data[:,1],
-                              sFname=sFname, iNref=2000)
+                              sFname=sFname)

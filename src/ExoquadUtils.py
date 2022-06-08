@@ -3,6 +3,7 @@ import Tasmanian
 import TasmanianAddons
 import numpy as np
 import matplotlib.pyplot as plt
+from pip._vendor.rich import print
 plt.rcParams['text.usetex'] = True
 
 def getData(pGridConstructor, iMaxPoints, fMinErr, fIntegral, pIntegrandFn):
@@ -30,7 +31,7 @@ def getData(pGridConstructor, iMaxPoints, fMinErr, fIntegral, pIntegrandFn):
 
 def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWeightFnReal, fShift, pWeightFnIm=[],
                  lGBNumPoints=np.array([]), lGBRelativeErr=np.array([]), sFname="plot.svg", iSymmetric=False, iNref=500,
-                 iLocalPolynomial=False):
+                 iLocalPolynomial=False, oEmptyRefGrid=Tasmanian.TasmanianSparseGrid()):
 # For an upper bound on the number of points and a given dimension, plot the accuracy of Gauss-Legendre, Gauss-Legendre (odd),
 # Gauss-Patterson, and Exotic Quadrature grids with respect to a given integral value fIntegral, a 1D weight function pWeightFn,
 # and an nD integrand function pIntegrandFn.
@@ -70,7 +71,14 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
 
     # Gauss-Exotic.
     def pExoGridFn(iDepth, pWeightFn):
-        exoCT = TasmanianAddons.createExoticQuadratureFromFunction(iDepth + 1, fShift, pWeightFn, iNref, "Exotic Quadrature", iSymmetric)
+        if (oEmptyRefGrid.getNumPoints() == 0):
+            exoCT = TasmanianAddons.createExoticQuadratureFromFunction(iDepth + 1, fShift, pWeightFn, iNref, "Exotic Quadrature", iSymmetric)
+        else:
+            if (oEmptyRefGrid.getNumNeeded() > 0):
+                needed_points = oEmptyRefGrid.getNeededPoints()
+                needed_values = pWeightFn(needed_points)
+                oEmptyRefGrid.loadNeededValues(needed_values)
+            exoCT = TasmanianAddons.createExoticQuadratureFromGrid(iDepth + 1, fShift, oEmptyRefGrid, "Exotic Quadrature", iSymmetric)
         return Tasmanian.makeGlobalGridCustom(iDim, 0, iDepth, 'qptotal', exoCT)
     if pWeightFnIm:
         pExoGridFnReal = lambda iDepth : pExoGridFn(iDepth, pWeightFnReal)
