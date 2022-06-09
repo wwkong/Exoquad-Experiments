@@ -1,11 +1,17 @@
 # One-dimensional experiments for the exotic quadrature paper.
 import Tasmanian
-import TasmanianAddons
 import numpy as np
 import matplotlib.pyplot as plt
-from pip._vendor.rich import print
 plt.rcParams['text.usetex'] = True
 
+def getRefinedSurrogate(pWeightFn, iDepth, sCriteria, fTolerance):
+# Creates a refined local polynomial grid to act as a surrogate model for a particular 1D weight function.
+    grid = Tasmanian.makeLocalPolynomialGrid(1, 1, iDepth)
+    while(grid.getNumNeeded() > 0):
+        Tasmanian.loadNeededValues(lambda x, tid: pWeightFn(x), grid, iNumThreads=4)
+        grid.setSurplusRefinement(fTolerance, 0, sCriteria)
+    return grid
+    
 def getData(pGridConstructor, iMaxPoints, fMinErr, fIntegral, pIntegrandFn):
 # Given a grid constructor with single input iDepth, returns the # of points and accuracy vectors of the grids up to a given
 # maximum number of points.
@@ -31,7 +37,7 @@ def getData(pGridConstructor, iMaxPoints, fMinErr, fIntegral, pIntegrandFn):
 
 def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWeightFnReal, fShift, pWeightFnIm=[],
                  lGBNumPoints=np.array([]), lGBRelativeErr=np.array([]), sFname="plot.svg", iSymmetric=False, iNref=500,
-                 iLocalPolynomial=False, oEmptyRefGrid=Tasmanian.TasmanianSparseGrid()):
+                 iLocalPolynomial=False, oRefGrid=Tasmanian.TasmanianSparseGrid()):
 # For an upper bound on the number of points and a given dimension, plot the accuracy of Gauss-Legendre, Gauss-Legendre (odd),
 # Gauss-Patterson, and Exotic Quadrature grids with respect to a given integral value fIntegral, a 1D weight function pWeightFn,
 # and an nD integrand function pIntegrandFn.
@@ -71,14 +77,10 @@ def plotAccuracy(sTitle, iMaxPoints, fMinErr, iDim, fIntegral, pIntegrandFn, pWe
 
     # Gauss-Exotic.
     def pExoGridFn(iDepth, pWeightFn):
-        if (oEmptyRefGrid.getNumPoints() == 0):
-            exoCT = TasmanianAddons.createExoticQuadratureFromFunction(iDepth + 1, fShift, pWeightFn, iNref, "Exotic Quadrature", iSymmetric)
+        if (oRefGrid.getNumPoints() == 0):
+            exoCT = Tasmanian.createExoticQuadratureFromFunction(iDepth + 1, fShift, pWeightFn, iNref, "Exotic Quadrature", iSymmetric)
         else:
-            if (oEmptyRefGrid.getNumNeeded() > 0):
-                needed_points = oEmptyRefGrid.getNeededPoints()
-                needed_values = pWeightFn(needed_points)
-                oEmptyRefGrid.loadNeededValues(needed_values)
-            exoCT = TasmanianAddons.createExoticQuadratureFromGrid(iDepth + 1, fShift, oEmptyRefGrid, "Exotic Quadrature", iSymmetric)
+            exoCT = Tasmanian.createExoticQuadratureFromGrid(iDepth + 1, fShift, oRefGrid, "Exotic Quadrature", iSymmetric)
         return Tasmanian.makeGlobalGridCustom(iDim, 0, iDepth, 'qptotal', exoCT)
     if pWeightFnIm:
         pExoGridFnReal = lambda iDepth : pExoGridFn(iDepth, pWeightFnReal)

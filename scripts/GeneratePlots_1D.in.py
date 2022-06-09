@@ -50,6 +50,11 @@ with open(antenna_a20_fname, "r") as f:
     antenna_a20_data = np.array([[float(num) for num in line.split('\t')] for line in f])
 AntennaExp.write_plot(20, antenna_a20_data, res_folder)
 
+# 1D Sinc experiments (a=10,20).
+import SincExp
+SincExp.write_plot(10, 0.32099682841103033, res_folder)
+SincExp.write_plot(20, 0.15609592912582969, res_folder)
+
 # 1D AbsSin experiments (a=2,5).
 import AbsSinExp
 AbsSinExp.write_plot(2, 0.22869582997457813, res_folder)

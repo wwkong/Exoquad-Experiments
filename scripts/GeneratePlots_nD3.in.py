@@ -12,4 +12,4 @@ import Tasmanian
 # QuadSinc experiments.
 import QuadSincExp
 for iDim in range(2, 5, 2):
-    QuadSincExp.write_plot(10, iDim, 0.33379512418920954, 0.3316695188437748, res_folder)
+    QuadSincExp.write_plot(20, iDim, 0.15458767050820131, 0.1548241701043440, res_folder)
